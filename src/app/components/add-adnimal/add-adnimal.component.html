@@ -1,0 +1,95 @@
+<fieldset>
+    <legend>Animal</legend>
+    <form>
+        <input type="text" placeholder="name" [formControl]="name">
+        <br>
+        <input type="text" placeholder="type" [formControl]="type">
+        <br>
+        <input type="text" placeholder="description" [formControl]="description">
+    </form>
+    <br>
+    <p>
+        {{name.value}}
+        {{type.value}}
+        {{description.value}}
+    </p>
+    <button (click)="changeName()">Tryck</button>
+</fieldset>
+
+<br>
+<br><br><br>
+<br>
+
+<fieldset>
+    <legend>Create user</legend>
+
+    <form [formGroup]="createUserForm" (ngSubmit)="submit()">
+
+        <input type="text" placeholder="förnamn" formControlName="firstname">
+        <input type="text" placeholder="efternamn" formControlName="lastname">
+        <input type="text" placeholder="epost" formControlName="email">
+        <input type="number" placeholder="ålder" formControlName="age">
+        <input type="number" placeholder="postnummer" formControlName="zip">
+
+        <button type="submit">spara</button>
+    </form>
+
+    <div>
+        <p>
+            {{createUserForm.value | json}}
+        </p>
+    </div>
+
+</fieldset>
+
+<br>
+<br><br><br>
+<br>
+
+<fieldset>
+    <legend>Create player</legend>
+
+   <form [formGroup]="playerForm" (ngSubmit)="savePlayer()">
+
+    <input type="text" placeholder="förnamn" formControlName="firstname">
+    
+        <div *ngIf="playerName?.touched && playerName?.invalid">
+
+            <div *ngIf="playerName?.errors?.['required']">
+                innehållet i namn är obiligatoriskt
+            </div>
+            
+            <div *ngIf="playerName?.errors?.['minlength']">
+                namnet måste bestå av minst 3 tecken 
+            </div>
+
+        </div>
+
+    
+    
+    <input type="text" placeholder="efternamn" formControlName="lastname">
+
+    <input type="text" placeholder="position" formControlName="position">
+
+    <input type="number" placeholder="tröjnummer" formControlName="shirtNumber">
+
+    <div formArrayName="nickNames">
+        <button (click)="addNickname()">Lägg till smeknamn</button>
+
+        <div *ngFor="let nick of nickNames.controls; let i = index">
+            <input type="text" placeholder="smeknamn" [formControlName]="i">
+        </div>
+
+    </div>
+
+    <button type="submit" [disabled]="!playerForm.valid">Spara spelare</button>
+
+   </form>
+
+   <div>
+       <p>{{playerForm.value | json}}</p>
+   </div>
+
+</fieldset>
+
+<p>Form Validering Status: {{playerForm.status}}</p>
